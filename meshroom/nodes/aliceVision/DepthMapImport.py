@@ -52,7 +52,7 @@ That script expect the depth image to be aside the rgb image, and have similar n
             name='depthIntrinsics',
             label='Depth Image Intrinsics',
             description='The depth image intrinsics are expected to be similar than rgb image. If unset will use assume than rgbIntrinsics==depthIntrincis',
-            value='{"w": 240,"h": 180,"fx": 178.8240,"fy": 179.2912,"cx": 119.8185,"cy": 90.5689}', #Honor View 20 intrinsics
+            value='{"w": 256,"h": 192,"fx": 764.54565,"fy": 764.54565,"cx": 510.88052,"cy": 385.82272}', #Iphone 13 Pro intrinsics
             uid=[0],
             advanced=True,
         ),
