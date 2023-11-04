@@ -13,8 +13,8 @@ class DepthMapImport(desc.AVCommandLineNode):
 
     category = 'Dense Reconstruction'
     documentation = '''
-Import depth maps (Kinect, Android Tof, ....). Thoses imported depth maps can override calculated depthmaps or enhance them.
-That script expect the depth image to be aside the rgb image, and have similar name (eg 0000234_image.jpg 0000234_depth16.bin)
+Import depth maps (Kinect, Android Tof, Iphone Pro....). Those imported depth maps can override calculated depthmaps or enhance them.
+That script expect the depth image to be aside the rgb image, and have similar name (eg 0000234_image.jpg 0000234_depth.png)
 '''
 
     inputs = [
@@ -44,7 +44,7 @@ That script expect the depth image to be aside the rgb image, and have similar n
             name='depthImageSuffix',
             label='Depth Image suffix',
             description='Used to guess the depthImage filename using the rgbImage filename: rgbPath.replace(rgbImageSuffix, depthImageSuffix)',
-            value="_depth16.bin",
+            value="_depth.png",
             uid=[0],
             advanced=True,
         ),
