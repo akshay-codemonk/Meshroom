@@ -14,7 +14,7 @@ class DepthMapImport(desc.AVCommandLineNode):
     category = 'Dense Reconstruction'
     documentation = '''
 Import depth maps (Kinect, Android Tof, Iphone Pro....). Those imported depth maps can override calculated depthmaps or enhance them.
-That script expect the depth image to be aside the rgb image, and have similar name (eg 0000234_image.jpg 0000234_depth.png)
+That script expect the depth image to be aside the rgb image, and have similar name (eg Image/0000234.jpg Depth/0000234.png)
 '''
 
     inputs = [
@@ -122,7 +122,7 @@ That script expect the depth image to be aside the rgb image, and have similar n
         for view in data["views"]:
             if self._stopped: raise RuntimeError("User asked to stop")
             rgb = view["path"]
-            depth_folder_path = os.path.join(os.path.dirname(rgb), "../depth")  # Go one directory back and choose depth folder
+            depth_folder_path = os.path.join(os.path.dirname(rgb), "../Depth")  # Go one directory back and choose depth folder
             depth_file_name = os.path.basename(rgb).replace(rgbImageSuffix, depthImageSuffix)  # Replace image suffix
             intputTofPath = os.path.join(depth_folder_path, depth_file_name)  # Using depth folder and depth prefix
             if not os.path.isfile(intputTofPath): raise Exception("Depth file not found", intputTofPath, "check if the file exists or if the rgbImageSuffix and depthImageSuffix are properly set")
