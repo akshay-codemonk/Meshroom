@@ -1,0 +1,96 @@
+#!/usr/bin/env python
+
+import argparse
+import os
+import sys
+import distutils.util
+
+import meshroom
+meshroom.setupEnvironment()
+
+import meshroom.core.graph
+import meshroom.core.taskManager
+from meshroom import multiview
+from meshroom.core.node import Status
+
+parser = argparse.ArgumentParser(description='Reconstruction with known camera poses.')
+
+parser.add_argument('-g', '--graph', metavar='GRAPHFILE.mg', type=str,
+                    help='Filepath to a graph file.')
+parser.add_argument('-sfm', '--cameraSFM', metavar='CAMERAFILE.sfm', type=str,
+                    help='Filepath to a camera file.')
+parser.add_argument('--paramOverrides', metavar='NODETYPE:param=value NODEINSTANCE.param=value', type=str, nargs='*',
+                    default=["StructureFromMotion:lockScenePreviouslyReconstructed=true", "StructureFromMotion:lockAllIntrinsics=true"],
+                    # default=None,
+                    help='Override specific parameters directly from the command line (by node type or by node names).')
+parser.add_argument('--toNode', metavar='NODE_NAME', type=str,
+                    help='Process the node with its dependencies.')
+parser.add_argument('--forceStatus', help='Force computation if status is RUNNING or SUBMITTED.',
+                    action='store_true')
+parser.add_argument('--forceCompute', help='Compute in all cases even if already computed.',
+                    action='store_true')
+parser.add_argument('--cache', metavar='FOLDER', type=str,
+                    default="MeshroomCache",
+                    help='Override the cache folder')
+
+args = parser.parse_args()
+
+def getOnlyNodeOfType(g, nodeType):
+    """ Helper function to get a node of 'nodeType' in the graph 'g' and raise if no or multiple candidates. """
+    nodes = g.nodesOfType(nodeType)
+    if len(nodes) != 1:
+        raise RuntimeError("meshroom_batch requires a pipeline graph with exactly one '{}' node, {} found."
+                           .format(nodeType, len(nodes)))
+    return nodes[0]
+
+print('Load graph {graph}'.format(graph=args.graph))
+graph = meshroom.core.graph.loadGraph(args.graph)
+if args.cache:
+    graph.cacheDir = os.path.abspath(args.cache)
+graph.update()
+
+if args.graph:
+    cameraInit = getOnlyNodeOfType(graph, 'CameraInit')
+    num_viewpoints = len(cameraInit.viewpoints.value)
+    print('Remove Node {nodeName}'.format(nodeName=cameraInit.name))
+    graph.removeNode(cameraInit.name)
+
+if args.cameraSFM:
+    featureExtraction = getOnlyNodeOfType(graph, 'FeatureExtraction')
+    print('Overrides {node}.{param}={value}'.format(node='FeatureExtraction', param='input', value=args.cameraSFM))
+    featureExtraction.attribute('input').value = args.cameraSFM
+
+
+if args.paramOverrides:
+        import re
+        reExtract = re.compile('(\w+)([:.])(\w+)=(.*)')
+        for p in args.paramOverrides:
+            result = reExtract.match(p)
+            if not result:
+                raise ValueError('Invalid param override: ' + str(p))
+            node, t, param, value = result.groups()
+            if t == ':':
+                nodesOfType = graph.nodesOfType(node)
+                if not nodesOfType:
+                    raise ValueError('No node with the type "{}" in the scene.'.format(node))
+                for n in nodesOfType:
+                    if value.lower() in ['true', 'false']:
+                        value = value.lower() in ['true']
+                    print('Overrides {node}.{param}={value}'.format(node=node, param=param, value=value))
+                    n.attribute(param).value = value
+            elif t == '.':
+                print('Overrides {node}.{param}={value}'.format(node=node, param=param, value=value))
+                graph.findNode(node).attribute(param).value = value
+            else:
+                raise ValueError('Invalid param override: ' + str(p))
+
+print("\n")
+
+toNodes = None
+if args.toNode:
+    toNodes = graph.findNodes([args.toNode])
+
+taskManager = meshroom.core.taskManager.TaskManager()
+taskManager.compute(graph, toNodes=toNodes, forceCompute=args.forceCompute, forceStatus=args.forceStatus)
+
+
