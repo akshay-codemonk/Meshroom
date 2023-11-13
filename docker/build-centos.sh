@@ -60,3 +60,8 @@ echo ""
 echo "docker push ${DEPS_DOCKER_TAG}"
 echo "docker push ${DOCKER_TAG}"
 echo ""
+
+# export below variables to run
+# export ALICEVISION_ROOT="/opt/Meshroom_bundle/aliceVision"
+# export ALICEVISION_SENSOR_DB="/opt/Meshroom_bundle/aliceVision/share/aliceVision/cameraSensors.db"
+# export AV_BUNDLE="/opt/Meshroom_bundle"
