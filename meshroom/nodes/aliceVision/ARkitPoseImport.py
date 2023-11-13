@@ -92,8 +92,9 @@ class ARkitPoseImport(desc.AVCommandLineNode):
                     coordinate_transform = np.diag(tmp_vec)
                     transform_matrix = np.dot(arkit_matrix, coordinate_transform)
                     rotation_matrix = transform_matrix[0:3,0:3]
-                    camera_rotation = rotation_matrix.flatten().tolist()
+                    camera_rotation = [str(element) for element in rotation_matrix.flatten()]
                     camera_center = [camera_data[f"t_{i}3"] for i in range(3)]
+                    camera_center = [str(element) for element in camera_center]
                     pose_data = {"poseId": poseId, "pose" : {'transform':{'rotation' : camera_rotation, 'center' : camera_center},'locked':"1"}}
                     sfm_data["poses"].append(pose_data)
                     chunk.logger.info("loaded " + pose_file_path + " for image " + image_path)    
