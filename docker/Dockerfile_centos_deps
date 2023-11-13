@@ -48,6 +48,11 @@ RUN yum install -y \
         xcb-util-renderutil \
         libxkbcommon-x11
 
+# OpenCV
+RUN yum install -y opencv-devel 
+RUN yum install -y opencv-python
+
+
 # Install Python3
 RUN yum install -y centos-release-scl && yum install -y rh-python36 && source scl_source enable rh-python36 && pip install --upgrade pip
 
