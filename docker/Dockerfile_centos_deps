@@ -32,6 +32,8 @@ RUN yum install -y \
         glib2 \
         libICE \
         libX11 \
+        xcb-util-image \
+        xcb-util-wm \
         libxcb \
         libXext \
         libXi \

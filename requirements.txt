@@ -1,5 +1,5 @@
 numpy
-opencv-python
+opencv-python --no-binary opencv-python
 psutil
 PySide2
 requests
