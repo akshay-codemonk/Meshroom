@@ -131,7 +131,7 @@ Many cameras are contributing to the low frequencies and only the best ones cont
                     name="normalFileType",
                     label="File Type",
                     description="File type for the normal map texture.",
-                    value="exr",
+                    value="png",
                     values = ("exr", "png", "tiff", "jpg"),
                     exclusive=True,
                     uid=[0],
