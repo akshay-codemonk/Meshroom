@@ -5,27 +5,26 @@
         "fileVersion": "1.1",
         "template": false,
         "nodesVersions": {
-            "MeshDenoising": "1.0",
-            "Texturing": "6.0",
-            "MeshFiltering": "3.0",
-            "ImageMatching": "2.0",
-            "CameraInit": "9.0",
-            "FeatureMatching": "2.0",
-            "PrepareDenseScene": "3.0",
-            "StructureFromMotion": "3.1",
-            "ConvertSfMFormat": "2.0",
             "DepthMap": "4.0",
             "DepthMapFilter": "3.0",
             "Meshing": "7.0",
             "FeatureExtraction": "1.2",
-            "Publish": "1.3"
+            "StructureFromMotion": "3.1",
+            "ARkitPoseImport": "2.0",
+            "CameraInit": "9.0",
+            "Texturing": "6.0",
+            "MeshFiltering": "3.0",
+            "ImageMatching": "2.0",
+            "FeatureMatching": "2.0",
+            "PrepareDenseScene": "3.0",
+            "DepthMapImport": "2.0"
         }
     },
     "graph": {
         "Texturing_1": {
             "nodeType": "Texturing",
             "position": [
-                2200,
+                2400,
                 0
             ],
             "parallelization": {
@@ -34,13 +33,13 @@
                 "split": 1
             },
             "uids": {
-                "0": "9208d223dd85125b34179a3387c4fb418befb537"
+                "0": "e4a6e4708b7220f47b86ec3951404414ddfb528d"
             },
             "internalFolder": "{cache}/{nodeType}/{uid0}/",
             "inputs": {
                 "input": "{Meshing_1.output}",
                 "imagesFolder": "{DepthMap_1.imagesFolder}",
-                "inputMesh": "{MeshDenoising_1.output}",
+                "inputMesh": "{MeshFiltering_1.outputMesh}",
                 "inputRefMesh": "",
                 "textureSide": 8192,
                 "downscale": 2,
@@ -98,7 +97,7 @@
         "Meshing_1": {
             "nodeType": "Meshing",
             "position": [
-                1600,
+                2000,
                 0
             ],
             "parallelization": {
@@ -107,12 +106,12 @@
                 "split": 1
             },
             "uids": {
-                "0": "392bff700dfa5d18966c3b0d654d8eff4257c03b"
+                "0": "983bccf9d522ef8c7fcae81f4f694b96a3e0ccab"
             },
             "internalFolder": "{cache}/{nodeType}/{uid0}/",
             "inputs": {
                 "input": "{DepthMapFilter_1.input}",
-                "depthMapsFolder": "{DepthMapFilter_1.output}",
+                "depthMapsFolder": "{DepthMapImport_1.output}",
                 "outputMeshFileType": "obj",
                 "useBoundingBox": false,
                 "boundingBox": {
@@ -163,7 +162,7 @@
                 "invertTetrahedronBasedOnNeighborsNbIterations": 10,
                 "minSolidAngleRatio": 0.2,
                 "nbSolidAngleFilteringIterations": 2,
-                "colorizeOutput": true,
+                "colorizeOutput": false,
                 "addMaskHelperPoints": false,
                 "maskHelperPointsWeight": 1.0,
                 "maskBorderSize": 4,
@@ -187,7 +186,7 @@
         "DepthMapFilter_1": {
             "nodeType": "DepthMapFilter",
             "position": [
-                1400,
+                1600,
                 0
             ],
             "parallelization": {
@@ -196,7 +195,7 @@
                 "split": 0
             },
             "uids": {
-                "0": "560fc1a012dc62fecc718619ca09b1f2be072069"
+                "0": "fb3ffe711b968ee5dec9c1cf2700560439ed10fc"
             },
             "internalFolder": "{cache}/{nodeType}/{uid0}/",
             "inputs": {
@@ -228,7 +227,7 @@
         "ImageMatching_1": {
             "nodeType": "ImageMatching",
             "position": [
-                400,
+                600,
                 0
             ],
             "parallelization": {
@@ -237,7 +236,7 @@
                 "split": 1
             },
             "uids": {
-                "0": "814f78327126920fa939416157bc988851829366"
+                "0": "481e1e3db8a5661102c5309826f2ad98714d98be"
             },
             "internalFolder": "{cache}/{nodeType}/{uid0}/",
             "inputs": {
@@ -264,10 +263,10 @@
                 "output": "{cache}/{nodeType}/{uid0}/imageMatches.txt"
             }
         },
-        "PrepareDenseScene_1": {
-            "nodeType": "PrepareDenseScene",
+        "FeatureExtraction_1": {
+            "nodeType": "FeatureExtraction",
             "position": [
-                1000,
+                400,
                 0
             ],
             "parallelization": {
@@ -276,14 +275,121 @@
                 "split": 0
             },
             "uids": {
-                "0": "676aff6b73ca6d5487f82ebfdffddf0faa86446e"
+                "0": "5c0bdf8f21d603b63f779d22fa368c238d9f3afc"
+            },
+            "internalFolder": "{cache}/{nodeType}/{uid0}/",
+            "inputs": {
+                "input": "{ARkitPoseImport_1.output}",
+                "masksFolder": "",
+                "describerTypes": [
+                    "dspsift"
+                ],
+                "describerPreset": "normal",
+                "maxNbFeatures": 0,
+                "describerQuality": "normal",
+                "contrastFiltering": "GridSort",
+                "relativePeakThreshold": 0.01,
+                "gridFiltering": true,
+                "workingColorSpace": "sRGB",
+                "forceCpuExtraction": true,
+                "maxThreads": 0,
+                "verboseLevel": "info"
+            },
+            "internalInputs": {
+                "invalidation": "",
+                "comment": "",
+                "label": "",
+                "color": ""
+            },
+            "outputs": {
+                "output": "{cache}/{nodeType}/{uid0}/"
+            }
+        },
+        "StructureFromMotion_1": {
+            "nodeType": "StructureFromMotion",
+            "position": [
+                1000,
+                0
+            ],
+            "parallelization": {
+                "blockSize": 0,
+                "size": 0,
+                "split": 1
+            },
+            "uids": {
+                "0": "e06cefd3fec059ccb653c1f48b03de9b58c20d5f"
+            },
+            "internalFolder": "{cache}/{nodeType}/{uid0}/",
+            "inputs": {
+                "input": "{FeatureMatching_1.input}",
+                "featuresFolders": "{FeatureMatching_1.featuresFolders}",
+                "matchesFolders": [
+                    "{FeatureMatching_1.output}"
+                ],
+                "describerTypes": "{FeatureMatching_1.describerTypes}",
+                "localizerEstimator": "acransac",
+                "observationConstraint": "Scale",
+                "localizerEstimatorMaxIterations": 4096,
+                "localizerEstimatorError": 0.0,
+                "lockScenePreviouslyReconstructed": false,
+                "useLocalBA": true,
+                "localBAGraphDistance": 1,
+                "nbFirstUnstableCameras": 30,
+                "maxImagesPerGroup": 30,
+                "bundleAdjustmentMaxOutliers": 50,
+                "maxNumberOfMatches": 0,
+                "minNumberOfMatches": 0,
+                "minInputTrackLength": 2,
+                "minNumberOfObservationsForTriangulation": 2,
+                "minAngleForTriangulation": 3.0,
+                "minAngleForLandmark": 2.0,
+                "maxReprojectionError": 4.0,
+                "minAngleInitialPair": 5.0,
+                "maxAngleInitialPair": 40.0,
+                "useOnlyMatchesFromInputFolder": false,
+                "useRigConstraint": true,
+                "rigMinNbCamerasForCalibration": 20,
+                "lockAllIntrinsics": false,
+                "minNbCamerasToRefinePrincipalPoint": 3,
+                "filterTrackForks": false,
+                "computeStructureColor": true,
+                "initialPairA": "",
+                "initialPairB": "",
+                "interFileExtension": ".abc",
+                "verboseLevel": "info"
+            },
+            "internalInputs": {
+                "invalidation": "",
+                "comment": "",
+                "label": "",
+                "color": ""
+            },
+            "outputs": {
+                "output": "{cache}/{nodeType}/{uid0}/sfm.abc",
+                "outputViewsAndPoses": "{cache}/{nodeType}/{uid0}/cameras.sfm",
+                "extraInfoFolder": "{cache}/{nodeType}/{uid0}/"
+            }
+        },
+        "PrepareDenseScene_1": {
+            "nodeType": "PrepareDenseScene",
+            "position": [
+                1200,
+                0
+            ],
+            "parallelization": {
+                "blockSize": 40,
+                "size": 0,
+                "split": 0
+            },
+            "uids": {
+                "0": "aea82b49310ba639ed7d896b74ecb84a57d2db24"
             },
             "internalFolder": "{cache}/{nodeType}/{uid0}/",
             "inputs": {
                 "input": "{StructureFromMotion_1.output}",
                 "imagesFolders": [],
                 "masksFolders": [],
-                "outputFileType": "png",
+                "outputFileType": "exr",
                 "saveMetadata": true,
                 "saveMatricesTxtFiles": false,
                 "evCorrection": false,
@@ -351,204 +457,10 @@
                 "output": "{cache}/{nodeType}/{uid0}/cameraInit.sfm"
             }
         },
-        "MeshFiltering_1": {
-            "nodeType": "MeshFiltering",
-            "position": [
-                1800,
-                0
-            ],
-            "parallelization": {
-                "blockSize": 0,
-                "size": 1,
-                "split": 1
-            },
-            "uids": {
-                "0": "9f9b8ca843f34740e71baa3a6c4417207ef32133"
-            },
-            "internalFolder": "{cache}/{nodeType}/{uid0}/",
-            "inputs": {
-                "inputMesh": "{Meshing_1.outputMesh}",
-                "outputMeshFileType": "obj",
-                "keepLargestMeshOnly": false,
-                "smoothingSubset": "all",
-                "smoothingBoundariesNeighbours": 0,
-                "smoothingIterations": 5,
-                "smoothingLambda": 1.0,
-                "filteringSubset": "all",
-                "filteringIterations": 1,
-                "filterLargeTrianglesFactor": 60.0,
-                "filterTrianglesRatio": 0.0,
-                "verboseLevel": "info"
-            },
-            "internalInputs": {
-                "invalidation": "",
-                "comment": "",
-                "label": "",
-                "color": ""
-            },
-            "outputs": {
-                "outputMesh": "{cache}/{nodeType}/{uid0}/mesh.{outputMeshFileTypeValue}"
-            }
-        },
-        "FeatureMatching_1": {
-            "nodeType": "FeatureMatching",
-            "position": [
-                600,
-                0
-            ],
-            "parallelization": {
-                "blockSize": 20,
-                "size": 0,
-                "split": 0
-            },
-            "uids": {
-                "0": "e9dd3fee2f3e4032cadc0a518ed4acfd9f248625"
-            },
-            "internalFolder": "{cache}/{nodeType}/{uid0}/",
-            "inputs": {
-                "input": "{ImageMatching_1.input}",
-                "featuresFolders": "{ImageMatching_1.featuresFolders}",
-                "imagePairsList": "{ImageMatching_1.output}",
-                "describerTypes": "{FeatureExtraction_1.describerTypes}",
-                "photometricMatchingMethod": "ANN_L2",
-                "geometricEstimator": "acransac",
-                "geometricFilterType": "fundamental_matrix",
-                "distanceRatio": 0.8,
-                "maxIteration": 2048,
-                "geometricError": 0.0,
-                "knownPosesGeometricErrorMax": 5.0,
-                "minRequired2DMotion": -1.0,
-                "maxMatches": 0,
-                "savePutativeMatches": false,
-                "crossMatching": false,
-                "guidedMatching": false,
-                "matchFromKnownCameraPoses": false,
-                "exportDebugFiles": false,
-                "verboseLevel": "info"
-            },
-            "internalInputs": {
-                "invalidation": "",
-                "comment": "",
-                "label": "",
-                "color": ""
-            },
-            "outputs": {
-                "output": "{cache}/{nodeType}/{uid0}/"
-            }
-        },
-        "Publish_1": {
-            "nodeType": "Publish",
-            "position": [
-                2400,
-                0
-            ],
-            "parallelization": {
-                "blockSize": 0,
-                "size": 5,
-                "split": 1
-            },
-            "uids": {
-                "0": "7854e5c79161af3403fa527abfc6a3330d337492"
-            },
-            "internalFolder": "{cache}/{nodeType}/{uid0}/",
-            "inputs": {
-                "inputFiles": [
-                    "{Texturing_1.outputMesh}",
-                    "{Texturing_1.outputMaterial}",
-                    "{Texturing_1.outputTextures}",
-                    "{ConvertSfMFormat_1.output}",
-                    "{Meshing_1.outputMesh}"
-                ],
-                "output": "/home/akshay/Downloads/meshroom_op",
-                "verboseLevel": "info"
-            },
-            "internalInputs": {
-                "invalidation": "",
-                "comment": "",
-                "label": "",
-                "color": ""
-            },
-            "outputs": {}
-        },
-        "MeshDenoising_1": {
-            "nodeType": "MeshDenoising",
-            "position": [
-                2000,
-                0
-            ],
-            "parallelization": {
-                "blockSize": 0,
-                "size": 1,
-                "split": 1
-            },
-            "uids": {
-                "0": "6f26545b983277b6d008af865e66e0e9e2b1f80b"
-            },
-            "internalFolder": "{cache}/{nodeType}/{uid0}/",
-            "inputs": {
-                "input": "{MeshFiltering_1.outputMesh}",
-                "denoisingIterations": 5,
-                "meshUpdateClosenessWeight": 0.001,
-                "lambda": 2.0,
-                "eta": 1.5,
-                "mu": 1.5,
-                "nu": 0.3,
-                "meshUpdateMethod": 0,
-                "verboseLevel": "info"
-            },
-            "internalInputs": {
-                "invalidation": "",
-                "comment": "",
-                "label": "",
-                "color": ""
-            },
-            "outputs": {
-                "output": "{cache}/{nodeType}/{uid0}/mesh.obj"
-            }
-        },
-        "ConvertSfMFormat_1": {
-            "nodeType": "ConvertSfMFormat",
-            "position": [
-                1800,
-                160
-            ],
-            "parallelization": {
-                "blockSize": 0,
-                "size": 1,
-                "split": 1
-            },
-            "uids": {
-                "0": "b5e5113a2750492649ed275b1d1e91568efcd486"
-            },
-            "internalFolder": "{cache}/{nodeType}/{uid0}/",
-            "inputs": {
-                "input": "{Meshing_1.output}",
-                "fileExt": "ply",
-                "describerTypes": [
-                    "unknown"
-                ],
-                "imageWhiteList": [],
-                "views": false,
-                "intrinsics": false,
-                "extrinsics": false,
-                "structure": true,
-                "observations": false,
-                "verboseLevel": "info"
-            },
-            "internalInputs": {
-                "invalidation": "",
-                "comment": "",
-                "label": "",
-                "color": ""
-            },
-            "outputs": {
-                "output": "{cache}/{nodeType}/{uid0}/sfm.{fileExtValue}"
-            }
-        },
         "DepthMap_1": {
             "nodeType": "DepthMap",
             "position": [
-                1200,
+                1400,
                 0
             ],
             "parallelization": {
@@ -557,7 +469,7 @@
                 "split": 0
             },
             "uids": {
-                "0": "eaf8391c18d041d5158cd5052d2b96fa1de9ef93"
+                "0": "bf22de7278b98bedafdf87365c7892909450f984"
             },
             "internalFolder": "{cache}/{nodeType}/{uid0}/",
             "inputs": {
@@ -618,7 +530,7 @@
                     "customPatchPatternGroupSubpartsPerLevel": false
                 },
                 "intermediateResults": {
-                    "exportIntermediateDepthSimMaps": true,
+                    "exportIntermediateDepthSimMaps": false,
                     "exportIntermediateNormalMaps": false,
                     "exportIntermediateVolumes": false,
                     "exportIntermediateCrossVolumes": false,
@@ -645,57 +557,33 @@
                 "depthRefined": "{cache}/{nodeType}/{uid0}/<VIEW_ID>_depthMap_refinedFused.exr"
             }
         },
-        "StructureFromMotion_1": {
-            "nodeType": "StructureFromMotion",
+        "MeshFiltering_1": {
+            "nodeType": "MeshFiltering",
             "position": [
-                800,
+                2200,
                 0
             ],
             "parallelization": {
                 "blockSize": 0,
-                "size": 0,
+                "size": 1,
                 "split": 1
             },
             "uids": {
-                "0": "a6d74b371b13b2398bc136d2605d04658613a7d7"
+                "0": "e74198744636b8cfa9224d89969f592e01065b55"
             },
             "internalFolder": "{cache}/{nodeType}/{uid0}/",
             "inputs": {
-                "input": "{FeatureMatching_1.input}",
-                "featuresFolders": "{FeatureMatching_1.featuresFolders}",
-                "matchesFolders": [
-                    "{FeatureMatching_1.output}"
-                ],
-                "describerTypes": "{FeatureMatching_1.describerTypes}",
-                "localizerEstimator": "acransac",
-                "observationConstraint": "Scale",
-                "localizerEstimatorMaxIterations": 4096,
-                "localizerEstimatorError": 0.0,
-                "lockScenePreviouslyReconstructed": false,
-                "useLocalBA": true,
-                "localBAGraphDistance": 1,
-                "nbFirstUnstableCameras": 30,
-                "maxImagesPerGroup": 30,
-                "bundleAdjustmentMaxOutliers": 50,
-                "maxNumberOfMatches": 0,
-                "minNumberOfMatches": 0,
-                "minInputTrackLength": 2,
-                "minNumberOfObservationsForTriangulation": 2,
-                "minAngleForTriangulation": 3.0,
-                "minAngleForLandmark": 2.0,
-                "maxReprojectionError": 4.0,
-                "minAngleInitialPair": 5.0,
-                "maxAngleInitialPair": 40.0,
-                "useOnlyMatchesFromInputFolder": false,
-                "useRigConstraint": true,
-                "rigMinNbCamerasForCalibration": 20,
-                "lockAllIntrinsics": false,
-                "minNbCamerasToRefinePrincipalPoint": 3,
-                "filterTrackForks": false,
-                "computeStructureColor": true,
-                "initialPairA": "",
-                "initialPairB": "",
-                "interFileExtension": ".ply",
+                "inputMesh": "{Meshing_1.outputMesh}",
+                "outputMeshFileType": "obj",
+                "keepLargestMeshOnly": false,
+                "smoothingSubset": "all",
+                "smoothingBoundariesNeighbours": 0,
+                "smoothingIterations": 5,
+                "smoothingLambda": 1.0,
+                "filteringSubset": "all",
+                "filteringIterations": 1,
+                "filterLargeTrianglesFactor": 60.0,
+                "filterTrianglesRatio": 0.0,
                 "verboseLevel": "info"
             },
             "internalInputs": {
@@ -705,41 +593,43 @@
                 "color": ""
             },
             "outputs": {
-                "output": "{cache}/{nodeType}/{uid0}/sfm.abc",
-                "outputViewsAndPoses": "{cache}/{nodeType}/{uid0}/cameras.sfm",
-                "extraInfoFolder": "{cache}/{nodeType}/{uid0}/"
+                "outputMesh": "{cache}/{nodeType}/{uid0}/mesh.{outputMeshFileTypeValue}"
             }
         },
-        "FeatureExtraction_1": {
-            "nodeType": "FeatureExtraction",
+        "FeatureMatching_1": {
+            "nodeType": "FeatureMatching",
             "position": [
-                200,
+                800,
                 0
             ],
             "parallelization": {
-                "blockSize": 40,
+                "blockSize": 20,
                 "size": 0,
                 "split": 0
             },
             "uids": {
-                "0": "495b3f8e97d7cfc9cea1d3532df33a9526c1bd72"
+                "0": "2624af2a19f8e55534a84e740a09c2f79423eb6c"
             },
             "internalFolder": "{cache}/{nodeType}/{uid0}/",
             "inputs": {
-                "input": "{CameraInit_1.output}",
-                "masksFolder": "",
-                "describerTypes": [
-                    "dspsift"
-                ],
-                "describerPreset": "ultra",
-                "maxNbFeatures": 0,
-                "describerQuality": "low",
-                "contrastFiltering": "GridSort",
-                "relativePeakThreshold": 0.01,
-                "gridFiltering": true,
-                "workingColorSpace": "sRGB",
-                "forceCpuExtraction": false,
-                "maxThreads": 0,
+                "input": "{ImageMatching_1.input}",
+                "featuresFolders": "{ImageMatching_1.featuresFolders}",
+                "imagePairsList": "{ImageMatching_1.output}",
+                "describerTypes": "{FeatureExtraction_1.describerTypes}",
+                "photometricMatchingMethod": "ANN_L2",
+                "geometricEstimator": "acransac",
+                "geometricFilterType": "fundamental_matrix",
+                "distanceRatio": 0.8,
+                "maxIteration": 2048,
+                "geometricError": 0.0,
+                "knownPosesGeometricErrorMax": 5.0,
+                "minRequired2DMotion": -1.0,
+                "maxMatches": 0,
+                "savePutativeMatches": false,
+                "crossMatching": false,
+                "guidedMatching": false,
+                "matchFromKnownCameraPoses": false,
+                "exportDebugFiles": false,
                 "verboseLevel": "info"
             },
             "internalInputs": {
@@ -750,6 +640,69 @@
             },
             "outputs": {
                 "output": "{cache}/{nodeType}/{uid0}/"
+            }
+        },
+        "DepthMapImport_1": {
+            "nodeType": "DepthMapImport",
+            "position": [
+                1800,
+                0
+            ],
+            "parallelization": {
+                "blockSize": 0,
+                "size": 0,
+                "split": 1
+            },
+            "uids": {
+                "0": "18143ab4f304b530b1eae584f027a3b4dbe43c39"
+            },
+            "internalFolder": "{cache}/{nodeType}/{uid0}/",
+            "inputs": {
+                "input": "{StructureFromMotion_1.outputViewsAndPoses}",
+                "depthMapsFolder": "{DepthMapFilter_1.output}",
+                "rgbImageSuffix": ".jpg",
+                "depthImageSuffix": ".jpg",
+                "depthIntrinsics": "{\"w\": 256,\"h\": 192,\"fx\": 764.54565,\"fy\": 764.54565,\"cx\": 510.88052,\"cy\": 385.82272}",
+                "ratio": 0.0,
+                "verboseLevel": "info"
+            },
+            "internalInputs": {
+                "invalidation": "",
+                "comment": "",
+                "label": "",
+                "color": ""
+            },
+            "outputs": {
+                "output": "{cache}/{nodeType}/{uid0}/"
+            }
+        },
+        "ARkitPoseImport_1": {
+            "nodeType": "ARkitPoseImport",
+            "position": [
+                200,
+                0
+            ],
+            "parallelization": {
+                "blockSize": 0,
+                "size": 0,
+                "split": 1
+            },
+            "uids": {
+                "0": "334373199cccba3aafc7006f497300e880a1e348"
+            },
+            "internalFolder": "{cache}/{nodeType}/{uid0}/",
+            "inputs": {
+                "input": "{CameraInit_1.output}",
+                "verboseLevel": "info"
+            },
+            "internalInputs": {
+                "invalidation": "",
+                "comment": "",
+                "label": "",
+                "color": ""
+            },
+            "outputs": {
+                "output": "{cache}/{nodeType}/{uid0}//cameras.sfm"
             }
         }
     }
