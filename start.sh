@@ -1,4 +1,5 @@
 #!/bin/bash
+
 export MESHROOM_ROOT="$(dirname "$(readlink -f "${BASH_SOURCE[0]}" )" )"
 export PYTHONPATH=$MESHROOM_ROOT:$PYTHONPATH
 export OPENCV_IO_ENABLE_OPENEXR=1

@@ -14,12 +14,15 @@ Provided in AliceVision source tree: {ALICEVISION_REPOSITORY}/src/aliceVision/se
 It can be downloaded [here](https://gitlab.com/alicevision/trainedVocabularyTreeData/raw/master/vlfeat_K80L3.SIFT.tree).
 * sphere detection model (optional): for the automated sphere detection in stereo photometry.
 It can be downloaded [here](https://gitlab.com/alicevision/SphereDetectionModel/-/raw/main/sphereDetection_Mask-RCNN.onnx).
+* semantic segmentation model (optional): for the semantic segmentation of objects.
+It can be downloaded [here](https://gitlab.com/alicevision/semanticSegmentationModel/-/raw/main/fcn_resnet50.onnx).
 
 Environment variables must be set for Meshroom to find those files:
 ```
 ALICEVISION_SENSOR_DB=/path/to/database
 ALICEVISION_VOCTREE=/path/to/voctree
 ALICEVISION_SPHERE_DETECTION_MODEL=/path/to/detection/model
+ALICEVISION_SEMANTIC_SEGMENTATION_MODEL=/path/to/segmentation/model
 ALICEVISION_ROOT=/path/to/AliceVision/install/directory
 ```
 
@@ -35,7 +38,7 @@ pip install -r requirements.txt -r dev_requirements.txt
 > Note: `dev_requirements` is only related to testing and packaging. It is not mandatory to run Meshroom.
 
 ### Qt/PySide
-* PySide >= 5.12.2
+* PySide >= 5.15.2.1
 Warning: On Windows, the plugin AssimpSceneParser is missing from pre-built binaries, so you need to add it manually (from an older version for instance).
 See https://bugreports.qt.io/browse/QTBUG-74535
 
@@ -52,10 +55,13 @@ QML2_IMPORT_PATH=/path/to/qmlAlembic/install/qml
 ```
 
 #### [QtAliceVision](https://github.com/alicevision/QtAliceVision)
-Use AliceVision to load and visualize intermediate reconstruction files and OpenImageIO as backend to read RAW/EXR images.
+It uses AliceVision to load and visualize intermediate reconstruction files and OpenImageIO as backend to read RAW/EXR images.
+It also adds support for Alembic file loading in Meshroom's 3D viewport, which allows to visualize sparse reconstruction results
+(point clouds and cameras).
+
 ```
-QML2_IMPORT_PATH=/path/to/qtAliceVision/install/qml
-QT_PLUGIN_PATH=/path/to/qtAliceVision/install
+QML2_IMPORT_PATH=/path/to/QtAliceVision/install/qml
+QT_PLUGIN_PATH=/path/to/QtAliceVision/install
 ```
 
 

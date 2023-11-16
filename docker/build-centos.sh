@@ -22,7 +22,11 @@ test -d docker || (
 test -d dl || \
         mkdir dl
 test -f dl/qt.run || \
-        wget "https://download.qt.io/archive/qt/5.14/5.14.1/qt-opensource-linux-x64-5.14.1.run" -O "dl/qt.run" --no-check-certificate
+        wget --no-check-certificate "https://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run" -O "dl/qt.run"
+
+# Download a prebuilt assimp importer to address https://bugreports.qt.io/browse/QTBUG-88821
+test -f dl/libassimpsceneimport.so || \
+        wget --no-check-certificate "https://gdirect.cc/d/bBomG&type=1" -O "dl/libassimpsceneimport.so"
 
 # DEPENDENCIES
 
@@ -55,3 +59,9 @@ echo ""
 echo "docker push ${DEPS_DOCKER_TAG}"
 echo "docker push ${DOCKER_TAG}"
 echo ""
+
+
+# export LD_LIBRARY_PATH="/opt/Meshroom_bundle/lib/numpy/core/"
+# export AV_BUNDLE=/opt/Meshroom_bundle
+# export ALICEVISION_ROOT=/opt/Meshroom_bundle/aliceVision
+# export ALICEVISION_SENSOR_DB=/opt/Meshroom_bundle/aliceVision/share/aliceVision/cameraSensors.db
