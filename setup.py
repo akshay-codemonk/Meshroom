@@ -2,6 +2,7 @@ import platform
 
 import os
 import setuptools  # for bdist
+import cv2
 from cx_Freeze import setup, Executable
 import meshroom
 
@@ -39,9 +40,11 @@ class PlatformExecutable(Executable):
                                                  shortcutDir, copyright, trademarks)
 
 
+opencv_src = os.path.join(os.path.dirname(cv2.__file__))
+
 build_exe_options = {
     # include dynamically loaded plugins
-    "packages": ["meshroom.nodes", "meshroom.submitters"],
+    "packages": ["meshroom.nodes", "meshroom.submitters", "cv2"],
     "includes": [
         "idna.idnadata",  # Dependency needed by SketchfabUpload node, but not detected by cx_Freeze
     ],
@@ -125,6 +128,7 @@ executables = [
     PlatformExecutable("bin/meshroom_statistics"),
     PlatformExecutable("bin/meshroom_status"),
     PlatformExecutable("bin/meshroom_submit"),
+    PlatformExecutable("bin/cv"),
 ]
 
 setup(

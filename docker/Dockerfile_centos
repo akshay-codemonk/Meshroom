@@ -66,15 +66,15 @@ COPY dl/libassimpsceneimport.so ${MESHROOM_BUNDLE}/lib/PySide2/Qt/plugins/scenep
 
 # Enable SSH X11 forwarding, needed when the Docker image
 # is run on a remote machine
-# RUN yum -y install openssh-server xauth mesa-dri-drivers && \
-# 	systemctl enable sshd && \
-# 	mkdir -p /run/sshd
+RUN yum -y install openssh-server xauth mesa-dri-drivers && \
+	systemctl enable sshd && \
+	mkdir -p /run/sshd
 
-# RUN sed -i "s/^.*X11Forwarding.*$/X11Forwarding yes/; s/^.*X11UseLocalhost.*$/X11UseLocalhost no/; s/^.*PermitRootLogin prohibit-password/PermitRootLogin yes/; s/^.*X11UseLocalhost.*/X11UseLocalhost no/;" /etc/ssh/sshd_config
-# RUN echo "root:meshroom" | chpasswd
+RUN sed -i "s/^.*X11Forwarding.*$/X11Forwarding yes/; s/^.*X11UseLocalhost.*$/X11UseLocalhost no/; s/^.*PermitRootLogin prohibit-password/PermitRootLogin yes/; s/^.*X11UseLocalhost.*/X11UseLocalhost no/;" /etc/ssh/sshd_config
+RUN echo "root:meshroom" | chpasswd
 
-# WORKDIR /root
+WORKDIR /root
 
-# EXPOSE 22
-# CMD bash -c "test -s /etc/machine-id || systemd-machine-id-setup; sshd-keygen; /usr/sbin/sshd -D"
+EXPOSE 22
+CMD bash -c "test -s /etc/machine-id || systemd-machine-id-setup; sshd-keygen; /usr/sbin/sshd -D"
 
