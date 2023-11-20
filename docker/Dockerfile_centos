@@ -73,7 +73,8 @@ RUN yum -y install openssh-server xauth mesa-dri-drivers && \
 RUN sed -i "s/^.*X11Forwarding.*$/X11Forwarding yes/; s/^.*X11UseLocalhost.*$/X11UseLocalhost no/; s/^.*PermitRootLogin prohibit-password/PermitRootLogin yes/; s/^.*X11UseLocalhost.*/X11UseLocalhost no/;" /etc/ssh/sshd_config
 RUN echo "root:meshroom" | chpasswd
 
-WORKDIR /root
+# workaround for https://github.com/opencv/opencv-python/issues/569
+WORKDIR /opt/rh/rh-python36/root/usr/lib64/python3.6/site-packages/cv2
 
 EXPOSE 22
 CMD bash -c "test -s /etc/machine-id || systemd-machine-id-setup; sshd-keygen; /usr/sbin/sshd -D"

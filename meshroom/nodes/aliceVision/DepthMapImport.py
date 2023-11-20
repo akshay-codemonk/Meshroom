@@ -202,6 +202,9 @@ class Utils:
         for k in intrinsics:
             intrinsics2[k] = int(intrinsics[k] * ratio)
         return intrinsics2
+    
+    def euclideanHypot(x, y, z):
+        return math.sqrt(x**2 + y**2 + z**2)
 
 
     # Android DEPTH16 format : https://developer.android.com/reference/android/graphics/ImageFormat#DEPTH16
@@ -228,7 +231,7 @@ class Utils:
     def pinholeDistanceToZ(d, x, y, intrsc):
         w, h, fx, fy, cx, cy = intrsc["w"], intrsc["h"], intrsc["fx"], intrsc["fy"], intrsc["cx"], intrsc["cy"]
         pcx, pcy = x - cx, y - cy
-        hypoxy = math.hypot(pcy, fx, pcx)
+        hypoxy = Utils.euclideanHypot(pcy, fx, pcx)
         return fx * d / hypoxy
 
     def zToPinholeDistance(z3, x, y, intrsc):
@@ -238,4 +241,4 @@ class Utils:
         pcy = y - cy
         x3 = pcx * z3 / fx
         y3 = pcy * z3 / fy
-        return math.hypot(x3, y3, z3)
+        return Utils.euclideanHypot(x3, y3, z3)

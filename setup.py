@@ -40,16 +40,16 @@ class PlatformExecutable(Executable):
                                                  shortcutDir, copyright, trademarks)
 
 
-opencv_src = os.path.join(os.path.dirname(cv2.__file__))
-
 build_exe_options = {
     # include dynamically loaded plugins
-    "packages": ["meshroom.nodes", "meshroom.submitters", "cv2"],
+    "packages": ["cv2", "meshroom.nodes", "meshroom.submitters"],
     "includes": [
+        "numpy",
         "idna.idnadata",  # Dependency needed by SketchfabUpload node, but not detected by cx_Freeze
     ],
     "include_files": ["CHANGES.md", "COPYING.md", "LICENSE-MPL2.md", "README.md"]
 }
+
 if os.path.isdir(os.path.join(currentDir, "tractor")):
     build_exe_options["packages"].append("tractor")
 if os.path.isdir(os.path.join(currentDir, "simpleFarm")):

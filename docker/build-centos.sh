@@ -60,7 +60,7 @@ echo "docker push ${DEPS_DOCKER_TAG}"
 echo "docker push ${DOCKER_TAG}"
 echo ""
 
-
+# export OPENCV_IO_ENABLE_OPENEXR=1
 # export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/opt/Meshroom_bundle/lib/numpy/core/"
 # export AV_BUNDLE=/opt/Meshroom_bundle
 # export ALICEVISION_ROOT=/opt/Meshroom_bundle/aliceVision
