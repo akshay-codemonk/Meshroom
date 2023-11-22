@@ -5,3 +5,6 @@ PySide2
 requests
 shiboken2
 urllib3
+boto3
+requests
+cryptography
