@@ -64,5 +64,4 @@ RUN source scl_source enable rh-python36 && \
 # Copy missing libassimpsceneimport.so
 COPY dl/libassimpsceneimport.so ${MESHROOM_BUNDLE}/lib/PySide2/Qt/plugins/sceneparsers
 
-# workaround for https://github.com/opencv/opencv-python/issues/569 cxFreeze specific issue
-WORKDIR /opt/rh/rh-python36/root/usr/lib64/python3.6/site-packages/cv2
+WORKDIR /root
