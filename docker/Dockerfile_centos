@@ -64,18 +64,7 @@ RUN source scl_source enable rh-python36 && \
 # Copy missing libassimpsceneimport.so
 COPY dl/libassimpsceneimport.so ${MESHROOM_BUNDLE}/lib/PySide2/Qt/plugins/sceneparsers
 
-# Enable SSH X11 forwarding, needed when the Docker image
-# is run on a remote machine
-RUN yum -y install openssh-server xauth mesa-dri-drivers && \
-	systemctl enable sshd && \
-	mkdir -p /run/sshd
+RUN export LD_LIBRARY_PATH="\${LD_LIBRARY_PATH}:/opt/Meshroom_bundle/lib/numpy/core/"
 
-RUN sed -i "s/^.*X11Forwarding.*$/X11Forwarding yes/; s/^.*X11UseLocalhost.*$/X11UseLocalhost no/; s/^.*PermitRootLogin prohibit-password/PermitRootLogin yes/; s/^.*X11UseLocalhost.*/X11UseLocalhost no/;" /etc/ssh/sshd_config
-RUN echo "root:meshroom" | chpasswd
-
-# workaround for https://github.com/opencv/opencv-python/issues/569
+# workaround for https://github.com/opencv/opencv-python/issues/569 cxFreeze specific issue
 WORKDIR /opt/rh/rh-python36/root/usr/lib64/python3.6/site-packages/cv2
-
-EXPOSE 22
-CMD bash -c "test -s /etc/machine-id || systemd-machine-id-setup; sshd-keygen; /usr/sbin/sshd -D"
-

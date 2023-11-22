@@ -128,7 +128,6 @@ executables = [
     PlatformExecutable("bin/meshroom_statistics"),
     PlatformExecutable("bin/meshroom_status"),
     PlatformExecutable("bin/meshroom_submit"),
-    PlatformExecutable("bin/cv"),
 ]
 
 setup(

@@ -11,6 +11,9 @@ echo "CUDA_VERSION=${CUDA_VERSION}"
 test -z "$CENTOS_VERSION" && CENTOS_VERSION="7"
 echo "CENTOS_VERSION=${CENTOS_VERSION}"
 
+test -z "$MESHROOM_IMG_NAME" && MESHROOM_IMG_NAME="alicevision/meshroom"
+echo "MESHROOM_IMG_NAME=${MESHROOM_IMG_NAME}"
+
 test -z "$AV_VERSION" && echo "AliceVision version not specified, set AV_VERSION in the environment" && exit 1
 echo "AV_VERSION=${AV_VERSION}"
 
@@ -42,7 +45,7 @@ docker build \
 
 # Meshroom
 
-DOCKER_TAG=alicevision/meshroom:${MESHROOM_VERSION}-av${AV_VERSION}-centos${CENTOS_VERSION}-cuda${CUDA_VERSION}
+DOCKER_TAG=${MESHROOM_IMG_NAME}:${MESHROOM_VERSION}-av${AV_VERSION}-centos${CENTOS_VERSION}-cuda${CUDA_VERSION}
 
 docker build \
 	--rm \
